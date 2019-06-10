@@ -1,0 +1,29 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// Font awesome
+@import '~font-awesome/scss/font-awesome.scss';
+
+// V Toaster
+@import '~v-toaster/dist/v-toaster.css';
+
+// Custom
+
+.blog-border-left {
+  border-left: 1px solid #f1f1f1;
+  padding: 20px 25px;
+}
+
+.blog-full-height {
+  min-height: calc(100vh - 200px);
+}
+
+.v-toaster {
+  top: 70px;
+}
