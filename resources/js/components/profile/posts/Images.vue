@@ -2,7 +2,9 @@
     <div>
         <profile-navigation></profile-navigation>
 
-        <div class="row">
+        <loader v-if="!loaded"></loader>
+
+        <div v-show="loaded" class="row">
             <div class="col-md-3">
                 <h3 class="title mb-3">Post #{{ id }} images</h3>
 
@@ -48,6 +50,7 @@
         data () {
             return {
                 id: this.$route.params['id'],
+                loaded: false,
                 busy: false,
                 busyImageId: false,
                 images: [],
@@ -65,10 +68,10 @@
             fetch () {
                 axios.get(`/api/profile/posts/${this.id}/images`).then(response => {
                     this.images = response.data.data;
+                    this.loaded = true;
 
                 }).catch(error => {
                     this.$router.push({name: 'profile'});
-                    this.$toaster.error('Access Denied.');
                 });
             },
 

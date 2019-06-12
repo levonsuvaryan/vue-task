@@ -1,5 +1,7 @@
 <template>
-
+    <div>
+        <loader></loader>
+    </div>
 </template>
 
 <script>

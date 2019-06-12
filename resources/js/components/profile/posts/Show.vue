@@ -2,7 +2,9 @@
     <div>
         <profile-navigation></profile-navigation>
 
-        <div class="row mb-3">
+        <loader v-if="!loaded"></loader>
+
+        <div v-show="loaded" class="row mb-3">
             <div class="col-md-8">
                 <h3 class="title">Post #{{ id }} - {{ post.title }}</h3>
             </div>
@@ -23,7 +25,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div v-show="loaded" class="row">
             <div class="col-md-4">
                 <img :src="post.image.path" class="img-fluid img-thumbnail">
             </div>
@@ -45,6 +47,7 @@
         data () {
             return {
                 id: this.$route.params['id'],
+                loaded: false,
                 busy: false,
                 post: {
                     image: {},
@@ -57,10 +60,10 @@
             fetch () {
                 axios.get(`/api/profile/posts/${this.id}`).then(response => {
                    this.post = response.data.data;
+                   this.loaded = true;
 
                 }).catch(error => {
                     this.$router.push({name: 'profile'});
-                    this.$toaster.error('Access Denied.');
                 });
             },
 

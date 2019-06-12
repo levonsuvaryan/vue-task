@@ -10,6 +10,5 @@ $factory->define(Post::class, function (Faker $faker) {
     return [
         'title' => $faker->text(50),
         'description' => $faker->text(500),
-        'user_id' => 1
     ];
 });

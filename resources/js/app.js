@@ -11,6 +11,7 @@ Vue.use(VueRouter);
 Vue.use(Toaster, {timeout: 5000});
 
 Vue.component('profile-navigation', require('./components/profile/Navigation.vue').default);
+Vue.component('loader', require('./components/partials/Loader.vue').default);
 
 Vue.config.productionTip = false;
 

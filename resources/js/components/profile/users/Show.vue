@@ -2,12 +2,14 @@
     <div>
         <profile-navigation></profile-navigation>
 
+        <loader v-if="!loaded"></loader>
+
         <div class="row mb-3">
             <div class="col-md-7">
                 <h3 class="title">User #{{ id }}</h3>
             </div>
 
-            <div class="col-md-5 text-right">
+            <div v-show="loaded" class="col-md-5 text-right">
 
                 <button v-if="isUser" @click.prevent="setAdmin" class="btn btn-primary mr-3" :disabled="busy">
                     <i v-if="busy" class="fa fa-spinner fa-spin"></i> Set Admin
@@ -28,7 +30,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div v-show="loaded" class="row">
             <div class="col-md-7">
                 <table class="table border">
                     <tr>
@@ -70,6 +72,7 @@
         data () {
             return {
                 id: this.$route.params['id'],
+                loaded: false,
                 busy: false,
                 user: {
                     role: {},
@@ -92,6 +95,7 @@
             fetch () {
                 axios.get(`/api/profile/users/${this.id}`).then(response => {
                     this.user = response.data.data;
+                    this.loaded = true;
                 });
             },
 
@@ -145,9 +149,8 @@
             next(vm => {
                 if (! vm.$store.getters.authUserIsAdmin) {
                     vm.$router.push({name: 'profile'});
-                    vm.$toaster.error('Access Denied.');
-                }
-                else {
+
+                } else {
                     vm.fetch();
                 }
             });

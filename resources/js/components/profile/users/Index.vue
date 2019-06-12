@@ -4,7 +4,9 @@
 
         <h3 class="title">Users</h3>
 
-        <table class="table border mb-4">
+        <loader v-if="!loaded"></loader>
+
+        <table v-show="loaded" class="table border mb-4">
             <thead>
             <tr>
                 <th>ID</th>
@@ -33,7 +35,7 @@
             </tbody>
         </table>
 
-        <ul v-if="meta.last_page > 1" class="pagination">
+        <ul v-show="loaded" v-if="meta.last_page > 1" class="pagination">
             <li class="page-item" :class="{disabled: meta.current_page === 1}">
                 <a class="page-link" href="#" @click.prevent="fetch(meta.current_page - 1)">Previous</a>
             </li>
@@ -53,6 +55,7 @@
     export default {
         data () {
             return {
+                loaded: false,
                 users: [],
                 meta: {},
             }
@@ -63,6 +66,7 @@
                 axios.get(`/api/profile/users?page=${page}`).then(response => {
                     this.users = response.data.data;
                     this.meta = response.data.meta;
+                    this.loaded = true;
                 });
             },
         },
@@ -71,7 +75,6 @@
             next(vm => {
                 if (! vm.$store.getters.authUserIsAdmin) {
                     vm.$router.push({name: 'profile'});
-                    vm.$toaster.error('Access Denied.');
                 }
                 else {
                     vm.fetch();

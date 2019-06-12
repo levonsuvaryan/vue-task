@@ -10,7 +10,9 @@
             </router-link>
         </div>
 
-        <table class="table border mb-4">
+        <loader v-if="!loaded"></loader>
+
+        <table v-show="loaded" class="table border mb-4">
             <thead>
             <tr>
                 <th>ID</th>
@@ -38,7 +40,7 @@
             </tbody>
         </table>
 
-        <ul v-if="meta.last_page > 1" class="pagination">
+        <ul v-show="loaded" v-if="meta.last_page > 1" class="pagination">
             <li class="page-item" :class="{disabled: meta.current_page === 1}">
                 <a class="page-link" href="#" @click.prevent="fetch(meta.current_page - 1)">Previous</a>
             </li>
@@ -58,6 +60,7 @@
     export default {
         data () {
             return {
+                loaded: false,
                 posts: [],
                 meta: {},
             }
@@ -65,11 +68,11 @@
 
         methods: {
             fetch (page = 1) {
-                axios.get(`/api/profile/posts?page=${page}`)
-                    .then(response => {
-                        this.posts = response.data.data;
-                        this.meta = response.data.meta;
-                    });
+                axios.get(`/api/profile/posts?page=${page}`).then(response => {
+                    this.posts = response.data.data;
+                    this.meta = response.data.meta;
+                    this.loaded = true;
+                });
             },
         },
 

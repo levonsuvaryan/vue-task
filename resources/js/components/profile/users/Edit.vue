@@ -2,9 +2,11 @@
     <div>
         <profile-navigation></profile-navigation>
 
-        <h2 class="title text-center">Edit User #{{ id }}</h2>
+        <loader v-if="!loaded"></loader>
 
-        <form method="POST" @submit.prevent="update">
+        <h2 class="title text-center mb-3">Edit User #{{ id }}</h2>
+
+        <form v-show="loaded" method="POST" @submit.prevent="update">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -60,6 +62,7 @@
             return {
                 id: this.$route.params['id'],
                 errors: new Errors(),
+                loaded: false,
                 busy: false,
                 name: '',
                 email: '',
@@ -73,6 +76,7 @@
                 axios.get(`/api/profile/users/${this.id}`).then(response => {
                    this.name = response.data.data.name;
                    this.email = response.data.data.email;
+                   this.loaded = true;
                 });
             },
 
@@ -111,7 +115,6 @@
             next(vm => {
                 if (! vm.$store.getters.authUserIsAdmin) {
                     vm.$router.push({name: 'profile'});
-                    vm.$toaster.error('Access Denied');
 
                 } else {
                     vm.fetch();

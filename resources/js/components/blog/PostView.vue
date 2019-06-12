@@ -1,6 +1,8 @@
 <template>
     <div>
-        <div class="row">
+        <loader v-if="!loaded"></loader>
+
+        <div v-show="loaded" class="row">
             <div class="col-md-12 mb-3">
                 <div class="blog-border-left">
                     <div class="row">
@@ -104,13 +106,12 @@
         data () {
             return {
                 id: this.$route.params['id'],
-
+                loaded: false,
                 post: {
                     user: {},
                     images: [],
                     comments: [],
                 },
-
                 errors: new Errors(),
                 busy: false,
                 comment: ''
@@ -133,6 +134,10 @@
             fetch () {
                 axios.get(`/api/posts/${this.id}`).then(response => {
                     this.post = response.data.data;
+                    this.loaded = true;
+
+                }).catch(error => {
+                    this.$router.push('/');
                 });
             },
 
@@ -165,7 +170,7 @@
         created () {
             this.fetch();
         },
-
+        
         watch: {
             $route (to) {
                 this.id = to.params['id'];

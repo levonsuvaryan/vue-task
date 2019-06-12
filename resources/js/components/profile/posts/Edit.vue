@@ -2,9 +2,11 @@
     <div>
         <profile-navigation></profile-navigation>
 
+        <loader v-if="!loaded"></loader>
+
         <h2 class="title text-center">Edit Post #{{ id }}</h2>
 
-        <form method="POST" @submit.prevent="update">
+        <form v-show="loaded" method="POST" @submit.prevent="update">
             <div class="form-group">
                 <label for="title">Title *</label>
                 <input v-model.lazy="title" type="text" id="title" class="form-control" :class="{'is-invalid': errors.has('title')}" required>
@@ -42,6 +44,7 @@
             return {
                 id: this.$route.params['id'],
                 errors: new Errors(),
+                loaded: false,
                 busy: false,
                 title: '',
                 description: '',
@@ -53,10 +56,10 @@
                 axios.get(`/api/profile/posts/${this.id}`).then(response => {
                     this.title = response.data.data.title;
                     this.description = response.data.data.description;
+                    this.loaded = true;
 
                 }).catch(error => {
                     this.$router.push({name: 'profile'});
-                    this.$toaster.error('Access Denied.');
                 });
             },
 

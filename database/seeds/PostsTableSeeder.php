@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Post;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class PostsTableSeeder extends Seeder
@@ -12,8 +13,13 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Post::class, 50)->create()->each(function ($post) {
-            $post->addMainImage('images/posts/' . random_int(1, 3) . '.jpg');
-        });
+        $user = User::findOrFail(1);
+
+        factory(Post::class, 50)->create(['user_id' => $user->id])
+            ->each(function ($post) use ($user) {
+                $path = 'images/posts/' . random_int(1, 3) . '.jpg';
+
+                $post->addMainImage($user->id, $path);
+            });
     }
 }
