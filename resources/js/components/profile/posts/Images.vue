@@ -66,7 +66,7 @@
 
         methods: {
             fetch () {
-                axios.get(`/api/profile/posts/${this.id}/images`).then(response => {
+                axios.get(`/api/posts/${this.id}/images`).then(response => {
                     this.images = response.data.data;
                     this.loaded = true;
 
@@ -98,7 +98,7 @@
                 let formData = new FormData();
                 formData.append('image', file);
 
-                await axios.post(`/api/profile/posts/${this.id}/images`, formData).then(response => {
+                await axios.post(`/api/posts/${this.id}/images`, formData).then(response => {
                     this.selectedFiles.shift();
                     let uploadedImage = response.data.data;
                     this.images.push(uploadedImage);
@@ -114,7 +114,7 @@
             destroy (imageId, imageIndex) {
                 this.busyImageId = imageId;
 
-                axios.delete(`/api/profile/images/${imageId}`).then(response => {
+                axios.delete(`/api/images/${imageId}`).then(response => {
                     this.$toaster.success(response.data.message);
                     this.images.splice(imageIndex, 1);
                     this.busyImageId = false;
@@ -128,7 +128,7 @@
             setMain (imageId, imageIndex) {
                 this.busyImageId = imageId;
 
-                axios.post(`/api/profile/images/${imageId}/main`).then(response => {
+                axios.post(`/api/images/${imageId}/main`).then(response => {
                     this.$toaster.success(response.data.message);
                     let oldIndexOfMainImage = this.getIndexOfMainImage();
                     this.images[oldIndexOfMainImage].is_main = false;

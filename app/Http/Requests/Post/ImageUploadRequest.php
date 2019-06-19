@@ -13,7 +13,7 @@ class ImageUploadRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can('uploadImage', $this->route('post'));
     }
 
     /**
@@ -27,4 +27,6 @@ class ImageUploadRequest extends FormRequest
             'image' => 'required|image|mimes:jpg,jpeg,png'
         ];
     }
+
+
 }

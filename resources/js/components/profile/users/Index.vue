@@ -63,7 +63,7 @@
 
         methods: {
             fetch (page = 1) {
-                axios.get(`/api/profile/users?page=${page}`).then(response => {
+                axios.get(`/api/users?page=${page}`).then(response => {
                     this.users = response.data.data;
                     this.meta = response.data.meta;
                     this.loaded = true;

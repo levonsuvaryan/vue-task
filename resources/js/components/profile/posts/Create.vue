@@ -74,7 +74,7 @@
                 formData.append('description', this.description);
                 formData.append('image', this.image);
 
-                axios.post('/api/profile/posts', formData).then(response => {
+                axios.post('/api/posts', formData).then(response => {
                     this.errors.forget();
                     this.$router.push({
                         name: 'profile.posts.show',

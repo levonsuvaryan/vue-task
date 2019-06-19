@@ -58,7 +58,7 @@
 
         methods: {
             fetch () {
-                axios.get(`/api/profile/posts/${this.id}`).then(response => {
+                axios.get(`/api/posts/${this.id}`).then(response => {
                    this.post = response.data.data;
                    this.loaded = true;
 
@@ -70,7 +70,7 @@
             destroy () {
                 this.busy = true;
 
-                axios.delete(`/api/profile/posts/${this.id}`).then(response => {
+                axios.delete(`/api/posts/${this.id}`).then(response => {
                     this.$router.push({name: 'profile.posts'});
                     this.$toaster.success(response.data.message);
                     this.busy = false;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,7 +16,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can('update', $this->route('user'));
     }
 
     /**
@@ -25,13 +26,11 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $id = $this->route()->parameter('user')->id;
-
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required', 'string', 'email', 'max:255',
-                Rule::unique('users')->ignore($id)
+                Rule::unique('users')->ignore($this->route('user'))
             ],
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Post;
 
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostCreateRequest extends FormRequest
@@ -13,9 +14,9 @@ class PostCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can('create', Post::class);
     }
-
+    
     /**
      * Get the validation rules that apply to the request.
      *

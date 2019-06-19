@@ -84,11 +84,20 @@
 
                     <div v-if="commentsCount > 0" class="mt-4">
 
-                        <div class="border pl-3 pr-3 pt-2 pb-2 mb-3" v-for="item in post.comments">
-                            <p class="m-0 mb-2">
-                                <span class="mr-3"><i class="fa fa-user"></i> {{ item.user.name }}</span>
-                                <span class="mr-3"><i class="fa fa-clock-o"></i> {{ item.created_at }}</span>
-                            </p>
+                        <div class="border pl-3 pr-3 pt-2 pb-2 mb-3" v-for="(item, index) in post.comments">
+
+                            <div class="d-flex justify-content-between">
+                                <p class="m-0 mb-2">
+                                    <span class="mr-3"><i class="fa fa-user"></i> {{ item.user.name }}</span>
+                                    <span class="mr-3"><i class="fa fa-clock-o"></i> {{ item.created_at }}</span>
+                                </p>
+
+                                <button @click.prevent="deleteComment(item.id, index)"
+                                        :disabled="busyCommentId === item.id" class="btn btn-sm btn-link">
+                                    <i v-if="busyCommentId === item.id" class="fa fa-spinner fa-spin text-primary"></i>
+                                    <i v-show="busyCommentId !== item.id" class="fa fa-trash-o"></i>
+                                </button>
+                            </div>
 
                             <p class="m-0">{{ item.body }}</p>
                         </div>
@@ -114,6 +123,7 @@
                 },
                 errors: new Errors(),
                 busy: false,
+                busyCommentId: false,
                 comment: ''
             }
         },
@@ -132,7 +142,7 @@
 
         methods: {
             fetch () {
-                axios.get(`/api/posts/${this.id}`).then(response => {
+                axios.get(`/api/blog/posts/${this.id}`).then(response => {
                     this.post = response.data.data;
                     this.loaded = true;
 
@@ -159,6 +169,20 @@
                 }).catch(error => {
                     this.errors.put(error.response.data);
                     this.busy = false;
+                });
+            },
+
+            deleteComment (commentId, commentIndex) {
+                this.busyCommentId = commentId;
+
+                axios.delete(`/api/comments/${commentId}`).then(response => {
+                    this.$toaster.success(response.data.message);
+                    this.post.comments.splice(commentIndex, 1);
+                    this.busyCommentId = false;
+
+                }).catch(error => {
+                    this.$toaster.error('Access Denied.');
+                    this.busyCommentId = false;
                 });
             },
 

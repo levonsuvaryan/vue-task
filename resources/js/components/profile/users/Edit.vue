@@ -73,7 +73,7 @@
 
         methods: {
             fetch () {
-                axios.get(`/api/profile/users/${this.id}`).then(response => {
+                axios.get(`/api/users/${this.id}`).then(response => {
                    this.name = response.data.data.name;
                    this.email = response.data.data.email;
                    this.loaded = true;
@@ -83,7 +83,7 @@
             update () {
                 this.busy = true;
 
-                axios.put(`/api/profile/users/${this.id}`, {
+                axios.put(`/api/users/${this.id}`, {
                     name: this.name,
                     email: this.email,
                     password: this.password,

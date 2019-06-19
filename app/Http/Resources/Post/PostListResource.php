@@ -17,7 +17,7 @@ class PostListResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'description' => str_limit($this->description, 100),
+            'description' => str_limit($this->description, 80),
             'created_at' => $this->created_at->diffForHumans(),
             'user' => new UserResource($this->user),
             'image' => new ImageResource($this->mainImage),

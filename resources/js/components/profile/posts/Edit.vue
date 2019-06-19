@@ -53,7 +53,7 @@
 
         methods: {
             fetch () {
-                axios.get(`/api/profile/posts/${this.id}`).then(response => {
+                axios.get(`/api/posts/${this.id}`).then(response => {
                     this.title = response.data.data.title;
                     this.description = response.data.data.description;
                     this.loaded = true;

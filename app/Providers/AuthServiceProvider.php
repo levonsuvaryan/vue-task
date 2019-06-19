@@ -2,8 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
 use App\Models\Image;
 use App\Models\Post;
+use App\Policies\CommentPolicy;
+use App\Policies\ImagePolicy;
+use App\Policies\PostPolicy;
+use App\Policies\UserPolicy;
 use App\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -17,7 +22,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        //
+        Post::class => PostPolicy::class,
+        Image::class => ImagePolicy::class,
+        User::class => UserPolicy::class,
+        Comment::class => CommentPolicy::class,
     ];
 
     /**
@@ -29,26 +37,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        $this->registerPermissions();
-
         Passport::routes(function ($router) {
             $router->forAccessTokens();
         });
     }
 
-    private function registerPermissions(): void
-    {
-        Gate::define('manage-post', function (User $user, Post $post) {
-            return $user->isAdmin() || $user->id === $post->user_id;
-        });
-
-        Gate::define('manage-image', function (User $user, Image $image) {
-            return $user->isAdmin() || $user->id === $image->user_id;
-        });
-
-        Gate::define('manage-users', function (User $user) {
-            return $user->isAdmin();
-        });
-    }
 
 }

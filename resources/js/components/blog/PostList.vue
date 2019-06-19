@@ -59,7 +59,7 @@
 
         methods: {
             fetch (page = 1) {
-                axios.get(`/api/posts?page=${page}`).then(response => {
+                axios.get(`/api/blog/posts?page=${page}`).then(response => {
                     this.posts = response.data.data;
                     this.meta = response.data.meta;
                     this.loaded = true;

@@ -65,6 +65,11 @@ class PostService
         );
     }
 
+    public function deleteComment(Comment $comment): void
+    {
+        $comment->delete();
+    }
+
     public function uploadImage(Post $post, ImageUploadRequest $request): Image
     {
         $file = $request->file('image');
@@ -87,6 +92,5 @@ class PostService
             $image->setMain();
         });
     }
-
 
 }

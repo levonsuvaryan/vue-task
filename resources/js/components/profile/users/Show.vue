@@ -93,7 +93,7 @@
 
         methods: {
             fetch () {
-                axios.get(`/api/profile/users/${this.id}`).then(response => {
+                axios.get(`/api/users/${this.id}`).then(response => {
                     this.user = response.data.data;
                     this.loaded = true;
                 });
@@ -102,7 +102,7 @@
             destroy () {
                 this.busy = true;
 
-                axios.delete(`/api/profile/users/${this.id}`).then(response => {
+                axios.delete(`/api/users/${this.id}`).then(response => {
                     this.$router.push({name: 'profile.users'});
                     this.$toaster.success(response.data.message);
                     this.busy = false;
@@ -115,7 +115,7 @@
             setAdmin () {
                 this.busy = true;
 
-                axios.post(`/api/profile/users/${this.id}/admin`).then(response => {
+                axios.post(`/api/users/${this.id}/admin`).then(response => {
                     this.user.role = response.data.role;
                     this.$toaster.success(response.data.message);
                     this.busy = false;
@@ -128,7 +128,7 @@
             setUser () {
                 this.busy = true;
 
-                axios.post(`/api/profile/users/${this.id}/user`).then(response => {
+                axios.post(`/api/users/${this.id}/user`).then(response => {
                     this.user.role = response.data.role;
                     this.$toaster.success(response.data.message);
                     this.busy = false;
